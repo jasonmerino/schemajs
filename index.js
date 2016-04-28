@@ -1,29 +1,25 @@
 'use strict';
 
-function dynamoDbConformer(type, value) {
-	switch (type) {
-		case Number:
-			return {
-				N: value.toString(),
-			};
-		case String:
-			return {
-				S: value.toString(),
-			};
-	};
-}
-
-function defaultConformer(type, value) {
-	return type(value);
-}
-
-function defineConformer(conformer) {
-	switch (conformer) {
-		case 'dynamodb':
-			return dynamoDbConformer;
-		default:
-			return defaultConformer;
+var conformers = {
+	dynamodb: function(type, value) {
+		switch (type) {
+			case Number:
+				return {
+					N: value.toString(),
+				};
+			case String:
+				return {
+					S: value.toString(),
+				};
+		};
+	},
+	default: function(type, value) {
+		return type(value);
 	}
+}
+
+function defineConformer(conformerName) {
+	return conformers[conformerName] || conformers.default;
 }
 
 function schema(schema, payload, conformer) {
