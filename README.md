@@ -2,6 +2,12 @@
 
 A JavaScript schema conformer
 
+## Installation
+
+```sh
+npm i jasonmerino/schemajs -S
+```
+
 ## Usage
 
 Require the module
